@@ -40,7 +40,8 @@ Este repositório constrói duas "trilhas" de imagem. A tag `latest` sempre apon
 A forma recomendada de usar esta imagem é com o Portainer Stacks ou `docker-compose`. Crie um arquivo `docker-compose.yml` com o seguinte conteúdo:
 
 ```yaml
-version: "3"
+version: "3.8"
+
 services:
   cups:
     # Use 'latest' (Ubuntu), 'debian', ou tags de versão como '2.4.12'
@@ -52,6 +53,8 @@ services:
     environment:
       # Defina aqui uma senha segura para o usuário 'admin' da interface web
       - ADMIN_PASSWORD=sua_senha_forte
+      # Define o fuso horário
+      - TZ=America/Sao_Paulo
     volumes:
       # Mapeia a pasta de configuração do CUPS para o seu sistema
       - /srv/cups/config:/etc/cups
@@ -63,6 +66,8 @@ services:
       - /dev/bus/usb:/dev/bus/usb
       # Essencial para descoberta de rede (Avahi)
       - /var/run/dbus:/var/run/dbus
+      # Sincroniza o relógio com o Host
+      - /etc/localtime:/etc/localtime:ro
     # 'host' é a forma mais fácil de garantir a descoberta de impressoras na rede (AirPrint)
     network_mode: host
 ```
